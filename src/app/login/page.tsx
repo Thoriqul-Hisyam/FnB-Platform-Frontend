@@ -1,26 +1,28 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import axios from '@/lib/axios';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import axios from "@/lib/axios";
+import { useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post('/auth/login', { email, password });
-      localStorage.setItem('accessToken', res.data.accessToken);
-      router.push('/dashboard');
+      const res = await axios.post("/auth/login", { email, password });
+      const accessToken = res.data.accessToken;
+      localStorage.setItem("accessToken", accessToken);
+      document.cookie = `accessToken=${accessToken}; path=/; secure; samesite=strict`;
+      router.push("/dashboard");
     } catch (err) {
-      setError('Login gagal. Periksa email dan password.');
+      setError("Login gagal. Periksa email dan password.");
     }
   };
 

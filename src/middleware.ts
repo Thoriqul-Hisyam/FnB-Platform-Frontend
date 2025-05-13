@@ -7,7 +7,6 @@ export function middleware(request: NextRequest) {
     request.headers.get("authorization")?.replace("Bearer ", "") ||
     request.nextUrl.searchParams.get("token") ||
     request.cookies.get("next-auth.session-token");
-
   if (!token && request.nextUrl.pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
